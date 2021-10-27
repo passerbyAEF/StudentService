@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:include="include :: header('绑定学生课程信息')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-Curriculum-edit">
+            <input name="id" th:field="${sysStudent.id}" type="hidden">
+            <div class="form-group">
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="bootstrap-table"></table>
+                </div>
+            </div>
+        </form>
+    </div>
+    <th:block th:include="include :: footer" />
+    <script th:inline="javascript">
+        var prefix = ctx + "system/student/edit/setCurriculum";
+        $(function () {
+            var options = {
+                url: prefix + "/list",
+                columns: [{
+                    checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: '',
+                    visible: false
+                },
+                {
+                    field: 'name',
+                    title: '课程名字'
+                },
+                {
+                    field: 'num',
+                    title: '课程学分'
+                },
+                {
+                    field: 'passLine',
+                    title: '及格线'
+                }]
+            };
+            $.table.init(options);
+        });
+
+        // var config = {
+        //     url:  prefix + "/list"+ $("index#id").area("value"),
+        //     type: "POST",
+        //     dataType: dataType,
+        //     data: data,
+        //     beforeSend: function () {
+        //         $.modal.loading("正在处理中，请稍后...");
+        //     },
+        //     success: function(result) {
+        //         if (typeof callback == "function") {
+        //             callback(result);
+        //         }
+        //         $.operate.ajaxSuccess(result);
+        //     }
+        // };
+        // $.ajax(config)
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                $.operate.save(prefix + "/edit", $('#form-Curriculum-edit').serialize());
+            }
+        }
+    </script>
+</body>
+</html>

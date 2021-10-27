@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysStudentMapper">
+
+    <resultMap type="SysStudent" id="SysStudentResult">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="status" column="status"/>
+        <result property="studentId" column="student_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+    </resultMap>
+
+    <sql id="selectSysStudentVo">
+        select sys_s.id,
+               sys_s.name,
+               sys_s.age,
+               sys_s.sex,
+               sys_s.status,
+               sys_s.student_id,
+               sys_u.user_id,
+               sys_u.user_name
+        from sys_student as sys_s
+                 left join sys_user_student as sys_us on sys_us.student_id = sys_s.id
+                 left join sys_user as sys_u on sys_u.user_id = sys_us.user_id
+    </sql>
+
+    <select id="selectSysStudentList" parameterType="SysStudent" resultMap="SysStudentResult">
+        <include refid="selectSysStudentVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="age != null ">and age = #{age}</if>
+            <if test="sex != null  and sex != ''">and sex = #{sex}</if>
+            <if test="status != null  and status != ''">and status = #{status}</if>
+            <if test="studentId != null  and studentId != ''">and student_id = #{studentId}</if>
+        </where>
+    </select>
+
+    <select id="selectSysStudentById" parameterType="Long" resultMap="SysStudentResult">
+        <include refid="selectSysStudentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysStudent" parameterType="SysStudent" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="age != null">age,</if>
+            <if test="sex != null">sex,</if>
+            <if test="status != null">status,</if>
+            <if test="studentId != null">student_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="age != null">#{age},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="status != null">#{status},</if>
+            <if test="studentId != null">#{studentId},</if>
+        </trim>
+        ;
+        insert into sys_user_student
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            student_id
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            LAST_INSERT_ID()
+        </trim>
+        ;
+    </insert>
+
+    <update id="updateSysStudent" parameterType="SysStudent">
+        update sys_student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="studentId != null">student_id = #{studentId},</if>
+        </trim>
+        where id = #{id};
+        update sys_user_student
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="id != null">student_id = #{id},</if>
+        </trim>
+        where student_id = #{id};
+    </update>
+
+    <delete id="deleteSysStudentById" parameterType="Long">
+        delete
+        from sys_student
+        where id = #{id};
+        delete
+        from sys_user_student
+        where student_id = #{id};
+    </delete>
+
+    <delete id="deleteSysStudentByIds" parameterType="String">
+        delete from sys_student where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>;
+        delete from sys_user_student where student_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>;
+    </delete>
+
+</mapper>
