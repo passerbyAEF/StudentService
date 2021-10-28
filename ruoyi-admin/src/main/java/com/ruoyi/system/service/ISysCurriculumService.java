@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import java.util.List;
 import com.ruoyi.system.domain.SysCurriculum;
 import com.ruoyi.system.domain.SysStudent;
+import com.ruoyi.system.vo.CurriculumListVo;
 
 /**
  * 课程Service接口
@@ -34,7 +35,7 @@ public interface ISysCurriculumService
      * @param sysStudent 学生信息
      * @return 课程集合
      */
-    public List<SysCurriculum> selectSysCurriculumListByStudent(SysStudent sysStudent);
+    public List<CurriculumListVo> selectSysCurriculumListByStudent(SysStudent sysStudent);
 
     /**
      * 新增课程

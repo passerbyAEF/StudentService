@@ -1,28 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <th:block th:include="include :: header('绑定学生课程信息')" />
+    <th:block th:include="include :: header('绑定学生课程信息')"/>
 </head>
 <body class="white-bg">
-    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-        <form class="form-horizontal m" id="form-Curriculum-edit">
-            <input name="id" th:field="${sysStudent.id}" type="hidden">
-            <div class="form-group">
-                <div class="col-sm-12 select-table table-striped">
-                    <table id="bootstrap-table"></table>
-                </div>
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-Curriculum-edit">
+        <div class="form-group">
+            <div class="col-sm-12 select-table table-striped">
+                <input name="id" th:field="${sysStudent.id}" type="hidden">
+                <table id="bootstrap-table"></table>
             </div>
-        </form>
-    </div>
-    <th:block th:include="include :: footer" />
-    <script th:inline="javascript">
-        var prefix = ctx + "system/student/edit/setCurriculum";
-        $(function () {
-            var options = {
-                url: prefix + "/list",
-                columns: [{
-                    checkbox: true
-                },
+        </div>
+    </form>
+</div>
+<th:block th:include="include :: footer"/>
+<script th:inline="javascript">
+    var prefix = ctx + "system/student/edit/setCurriculum";
+    $(function () {
+        var options = {
+            url: prefix + "/list/"+$("input#id").attr("value"),
+            columns: [{
+                checkbox: true,
+                formatter: function (value, row, index) {
+                    return true;
+                }
+            },
                 {
                     field: 'id',
                     title: '',
@@ -40,32 +43,24 @@
                     field: 'passLine',
                     title: '及格线'
                 }]
-            };
-            $.table.init(options);
-        });
+        };
+        $.table.init(options);
+    });
 
-        // var config = {
-        //     url:  prefix + "/list"+ $("index#id").area("value"),
-        //     type: "POST",
-        //     dataType: dataType,
-        //     data: data,
-        //     beforeSend: function () {
-        //         $.modal.loading("正在处理中，请稍后...");
-        //     },
-        //     success: function(result) {
-        //         if (typeof callback == "function") {
-        //             callback(result);
-        //         }
-        //         $.operate.ajaxSuccess(result);
-        //     }
-        // };
-        // $.ajax(config)
-
-        function submitHandler() {
-            if ($.validate.form()) {
-                $.operate.save(prefix + "/edit", $('#form-Curriculum-edit').serialize());
+    function submitHandler() {
+        if ($.validate.form()) {
+            var fromstr = $('#form-Curriculum-edit').serialize()+'&';
+            var datalist = $("#bootstrap-table").bootstrapTable('getSelections', function (row) {
+                return row;
+            });
+            var list=[];
+            for(const data in datalist){
+                list.push(datalist[data].id);
             }
+            fromstr+='datalist='+list.toString();
+            $.operate.save(prefix + "/edit",fromstr);
         }
-    </script>
+    }
+</script>
 </body>
 </html>

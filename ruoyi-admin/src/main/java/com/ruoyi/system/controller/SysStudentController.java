@@ -1,29 +1,26 @@
 package com.ruoyi.system.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import com.github.pagehelper.PageHelper;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.framework.web.domain.server.Sys;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysCurriculum;
-import com.ruoyi.system.domain.SysTeacher;
+import com.ruoyi.system.domain.SysStudent;
 import com.ruoyi.system.service.ISysCurriculumService;
+import com.ruoyi.system.service.ISysStudentService;
 import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.vo.CurriculumListVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.system.domain.SysStudent;
-import com.ruoyi.system.service.ISysStudentService;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+
+import java.util.List;
 
 /**
  * 学生信息Controller
@@ -163,23 +160,14 @@ public class SysStudentController extends BaseController {
      * 课程List获取
      */
     @RequiresPermissions("system:student:curriculum")
-    @PostMapping("/edit/setCurriculum/list")
-    @ResponseBody
-    public TableDataInfo getCurriculumList() {
-        startPage();
-        List<SysCurriculum> list = sysCurriculumService.selectSysCurriculumList(new SysCurriculum());
-        return getDataTable(list);
-    }
-
-    /**
-     * 课程List获取
-     */
-    @RequiresPermissions("system:student:curriculum")
-    @GetMapping("/edit/setCurriculum/list/{id}")
+    @PostMapping("/edit/setCurriculum/list/{id}")
     @ResponseBody
     public TableDataInfo getCurriculumListByStudent(@PathVariable("id") Long id) {
         startPage();
         List<SysCurriculum> list = sysCurriculumService.selectSysCurriculumList(new SysCurriculum());
+        SysStudent student = new SysStudent();
+        student.setId(id);
+        List<CurriculumListVo> sclist = sysCurriculumService.selectSysCurriculumListByStudent(student);
         return getDataTable(list);
     }
 
@@ -189,7 +177,7 @@ public class SysStudentController extends BaseController {
     @RequiresPermissions("system:student:curriculum")
     @PostMapping("/edit/setCurriculum/edit")
     @ResponseBody
-    public AjaxResult editCurriculum() {
+    public AjaxResult editCurriculum(@RequestParam("id") Integer id, @RequestParam("datalist") List<Integer> dataList) {
 //        startPage();
 //        List<SysCurriculum> list = sysCurriculumService.selectSysCurriculumList(new SysCurriculum());
         return success();

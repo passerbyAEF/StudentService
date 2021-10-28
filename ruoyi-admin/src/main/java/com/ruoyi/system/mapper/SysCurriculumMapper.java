@@ -3,6 +3,7 @@ package com.ruoyi.system.mapper;
 import java.util.List;
 import com.ruoyi.system.domain.SysCurriculum;
 import com.ruoyi.system.domain.SysStudent;
+import com.ruoyi.system.vo.CurriculumListVo;
 
 /**
  * 课程Mapper接口
@@ -34,7 +35,7 @@ public interface SysCurriculumMapper
      * @param sysStudent 学生
      * @return 课程集合
      */
-    public List<SysCurriculum> selectSysCurriculumListByStudent(SysStudent sysStudent);
+    public List<CurriculumListVo> selectSysCurriculumListByStudent(SysStudent sysStudent);
 
     /**
      * 新增课程
