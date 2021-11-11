@@ -8,7 +8,7 @@
     <form class="form-horizontal m" id="form-Curriculum-edit">
         <div class="form-group">
             <div class="col-sm-12 select-table table-striped">
-                <input name="id" th:field="${sysStudent.id}" type="hidden">
+                <input name="id" th:field="${sysTeacher.id}" type="hidden">
                 <table id="bootstrap-table"></table>
             </div>
         </div>
@@ -16,10 +16,10 @@
 </div>
 <th:block th:include="include :: footer"/>
 <script th:inline="javascript">
-    var prefix = ctx + "system/student/edit/setCurriculum";
+    var prefix = ctx + "system/teacher/edit/setCurriculum";
     $(function () {
         var options = {
-            url: prefix + "/list/",
+            url: prefix + "/list/"+$("input#id").attr("value"),
             columns: [{
                 checkbox: true,
                 // formatter: function (value, row, index) {

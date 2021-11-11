@@ -11,13 +11,6 @@
         <result property="passLine" column="pass_line"/>
     </resultMap>
 
-    <resultMap type="SysCurriculum" id="SysCurriculumResult">
-        <result property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="num" column="num"/>
-        <result property="passLine" column="pass_line"/>
-    </resultMap>
-
     <sql id="selectSysCurriculumVo">
         select sys_c.id, sys_c.name, sys_c.num, sys_c.pass_line
         from sys_curriculum as sys_c
@@ -26,9 +19,18 @@
     <select id="selectSysCurriculumListByStudent" parameterType="SysStudent" resultMap="SysCurriculumResult">
         select sys_c.id, sys_c.name, sys_c.num, sys_c.pass_line
         from sys_curriculum as sys_c
-        left join sys_curriculum_student as sys_cs on sys_cs.student_id = sys_c.id
+        left join sys_curriculum_student as sys_cs on sys_cs.curriculum_id = sys_c.id
         <where>
-            <if test="name != null  and name != ''">and sys_c.name like concat('%', #{name}, '%')</if>
+            <if test="id != null">sys_cs.student_id = ${id}</if>
+        </where>
+    </select>
+
+    <select id="selectSysCurriculumListByTeacher" parameterType="SysStudent" resultMap="SysCurriculumResult">
+        select sys_c.id, sys_c.name, sys_c.num, sys_c.pass_line
+        from sys_curriculum as sys_c
+        left join sys_curriculum_teacher as sys_ct on sys_ct.curriculum_id = sys_c.id
+        <where>
+            <if test="id != null">sys_ct.teacher_id = ${id}</if>
         </where>
     </select>
 

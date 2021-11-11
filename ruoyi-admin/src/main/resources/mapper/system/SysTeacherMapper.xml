@@ -42,6 +42,11 @@
         where id = #{id}
     </select>
 
+    <select id="selectSysTeacherByUserId" parameterType="Long" resultMap="SysTeacherResult">
+        <include refid="selectSysTeacherVo"/>
+        where sys_u.user_id = #{id}
+    </select>
+
     <insert id="insertSysTeacher" parameterType="SysTeacher">
         insert into sys_teacher
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -87,6 +92,17 @@
         </trim>
         where teacher_id = #{id};
     </update>
+
+    <insert id="insertTeacherAndCurriculum" parameterType="Integer">
+        insert into sys_curriculum_teacher
+        values (#{id}, #{Cid});
+    </insert>
+
+    <delete id="deleteTeacherAndCurriculum" parameterType="Integer">
+        delete
+        from sys_curriculum_teacher
+        where teacher_id = #{id};
+    </delete>
 
     <delete id="deleteSysTeacherById" parameterType="Long">
         delete

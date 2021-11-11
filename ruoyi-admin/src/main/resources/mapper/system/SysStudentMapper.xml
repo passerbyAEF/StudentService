@@ -45,6 +45,11 @@
         where id = #{id}
     </select>
 
+    <select id="selectStudentByUserId" parameterType="Long" resultMap="SysStudentResult">
+        <include refid="selectSysStudentVo"/>
+        where sys_u.user_id = ${id}
+    </select>
+
     <insert id="insertSysStudent" parameterType="SysStudent" useGeneratedKeys="true" keyProperty="id">
         insert into sys_student
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -91,6 +96,17 @@
         </trim>
         where student_id = #{id};
     </update>
+
+    <insert id="insertStudentAndCurriculum" parameterType="Integer">
+        insert into sys_curriculum_student
+        values (#{id}, #{Cid});
+    </insert>
+
+    <delete id="deleteStudentAndCurriculum" parameterType="Integer">
+        delete
+        from sys_curriculum_student
+        where student_id = #{id};
+    </delete>
 
     <delete id="deleteSysStudentById" parameterType="Long">
         delete

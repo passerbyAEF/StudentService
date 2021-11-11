@@ -91,4 +91,19 @@ public class SysTeacherServiceImpl implements ISysTeacherService
     {
         return sysTeacherMapper.deleteSysTeacherById(id);
     }
+
+    @Override
+    public int updateStudentAndCurriculum(Integer id, List<Integer> Cid) {
+        int i=0;
+        sysTeacherMapper.deleteTeacherAndCurriculum(id);
+        for (Integer integer : Cid) {
+            i+=sysTeacherMapper.insertTeacherAndCurriculum(id,integer);
+        }
+        return i;
+    }
+
+    @Override
+    public SysTeacher selectSysTeacherByUserId(Long id) {
+        return sysTeacherMapper.selectSysTeacherByUserId(id);
+    }
 }

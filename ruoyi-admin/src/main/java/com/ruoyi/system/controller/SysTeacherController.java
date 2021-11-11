@@ -4,16 +4,15 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.SysCurriculum;
+import com.ruoyi.system.domain.SysStudent;
+import com.ruoyi.system.service.ISysCurriculumService;
 import com.ruoyi.system.service.ISysUserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.system.domain.SysTeacher;
@@ -38,6 +37,8 @@ public class SysTeacherController extends BaseController {
     private ISysTeacherService sysTeacherService;
     @Autowired
     private ISysUserService sysUserService;
+    @Autowired
+    private ISysCurriculumService sysCurriculumService;
 
     String authCheck(SysTeacher sysTeacher){
         SysUser user = sysUserService.selectUserById(sysTeacher.getUserId());
@@ -142,5 +143,41 @@ public class SysTeacherController extends BaseController {
     @ResponseBody
     public AjaxResult remove(String ids) {
         return toAjax(sysTeacherService.deleteSysTeacherByIds(ids) > 1);
+    }
+
+    /**
+     * 修改课程视图
+     */
+    @RequiresPermissions("system:teacher:curriculum")
+    @GetMapping("/edit/setCurriculum/{id}")
+    public String setCurriculum(@PathVariable("id") Long id, ModelMap mmap) {
+        SysTeacher sysTeacher = sysTeacherService.selectSysTeacherById(id);
+        mmap.put("sysTeacher", sysTeacher);
+        return prefix + "/curriculum-edit";
+    }
+
+    /**
+     * 课程List获取
+     */
+    @RequiresPermissions("system:teacher:curriculum")
+    @PostMapping("/edit/setCurriculum/list/{id}")
+    @ResponseBody
+    public TableDataInfo getCurriculumListByTeacher(@PathVariable("id") Long id) {
+        startPage();
+        List<SysCurriculum> list = sysCurriculumService.selectSysCurriculumList(new SysCurriculum());
+        return getDataTable(list);
+    }
+
+    /**
+     * 课程List修改
+     */
+    @RequiresPermissions("system:teacher:curriculum")
+    @PostMapping("/edit/setCurriculum/edit")
+    @ResponseBody
+    public AjaxResult editCurriculum(@RequestParam("id") Integer id, @RequestParam("datalist") List<Integer> dataList) {
+        int i=sysTeacherService.updateStudentAndCurriculum(id,dataList);
+        if(i<dataList.size())
+            return AjaxResult.warn("数据修改失败");
+        return success();
     }
 }

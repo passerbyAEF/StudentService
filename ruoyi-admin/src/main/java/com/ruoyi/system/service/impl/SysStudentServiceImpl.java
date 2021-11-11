@@ -91,4 +91,19 @@ public class SysStudentServiceImpl implements ISysStudentService
     {
         return sysStudentMapper.deleteSysStudentById(id);
     }
+
+    @Override
+    public int updateStudentAndCurriculum(Integer id, List<Integer> Cid) {
+        int i=0;
+        sysStudentMapper.deleteStudentAndCurriculum(id);
+        for (Integer integer : Cid) {
+            i+=sysStudentMapper.insertStudentAndCurriculum(id,integer);
+        }
+        return i;
+    }
+
+    @Override
+    public SysStudent selectStudentByUserId(Long id) {
+        return sysStudentMapper.selectStudentByUserId(id);
+    }
 }

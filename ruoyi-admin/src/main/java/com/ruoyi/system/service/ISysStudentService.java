@@ -58,4 +58,8 @@ public interface ISysStudentService
      * @return 结果
      */
     public int deleteSysStudentById(Long id);
+
+    public int updateStudentAndCurriculum(Integer id,List<Integer> Cid);
+
+    SysStudent selectStudentByUserId(Long id);
 }

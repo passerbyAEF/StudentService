@@ -3,6 +3,7 @@ package com.ruoyi.system.mapper;
 import java.util.List;
 import com.ruoyi.system.domain.SysCurriculum;
 import com.ruoyi.system.domain.SysStudent;
+import com.ruoyi.system.domain.SysTeacher;
 import com.ruoyi.system.vo.CurriculumListVo;
 
 /**
@@ -35,7 +36,15 @@ public interface SysCurriculumMapper
      * @param sysStudent 学生
      * @return 课程集合
      */
-    public List<CurriculumListVo> selectSysCurriculumListByStudent(SysStudent sysStudent);
+    public List<SysCurriculum> selectSysCurriculumListByStudent(SysStudent sysStudent);
+
+    /**
+     * 通过教师查询课程列表
+     *
+     * @param sysTeacher 教师
+     * @return 课程集合
+     */
+    public List<SysCurriculum> selectSysCurriculumListByTeacher(SysTeacher sysTeacher);
 
     /**
      * 新增课程

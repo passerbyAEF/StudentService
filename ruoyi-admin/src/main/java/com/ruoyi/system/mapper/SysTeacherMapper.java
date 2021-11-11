@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysTeacher;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 教师Mapper接口
@@ -58,4 +59,10 @@ public interface SysTeacherMapper
      * @return 结果
      */
     public int deleteSysTeacherByIds(String[] ids);
+
+    void deleteTeacherAndCurriculum(@Param("id") Integer id);
+
+    int insertTeacherAndCurriculum(@Param("id")Integer id, @Param("Cid")Integer integer);
+
+    SysTeacher selectSysTeacherByUserId(@Param("id") Long id);
 }

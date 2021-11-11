@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <th:block th:include="include :: header('学生信息')"/>
+</head>
+<body>
+<li>你好！[[${sysStudent.name}]]</li>
+<li>你的学号是：[[${sysStudent.studentId}]]</li>
+<li>[[${sysStudent.age}]]岁</li>
+<li>性别[[${sysStudent.sex}]]</li>
+<li>
+    <label>课程：</label>
+    <div class="col-sm-12 select-table table-striped">
+        <table id="bootstrap-table"></table>
+    </div>
+    </div>
+</li>
+<th:block th:include="include :: footer"/>
+<script>
+    var prefix = ctx + "view/student";
+    $(function () {
+        var options = {
+            url: prefix + "/list/",
+            columns: [
+                {
+                    field: 'name',
+                    title: '课程名字'
+                },
+                {
+                    field: 'num',
+                    title: '课程学分'
+                },
+                {
+                    field: 'passLine',
+                    title: '及格线'
+                }]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

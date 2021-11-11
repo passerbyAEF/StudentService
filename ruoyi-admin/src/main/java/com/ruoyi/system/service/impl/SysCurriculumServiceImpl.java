@@ -3,6 +3,7 @@ package com.ruoyi.system.service.impl;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.system.domain.SysCurriculum;
 import com.ruoyi.system.domain.SysStudent;
+import com.ruoyi.system.domain.SysTeacher;
 import com.ruoyi.system.mapper.SysCurriculumMapper;
 import com.ruoyi.system.service.ISysCurriculumService;
 import com.ruoyi.system.vo.CurriculumListVo;
@@ -45,8 +46,13 @@ public class SysCurriculumServiceImpl implements ISysCurriculumService {
     }
 
     @Override
-    public List<CurriculumListVo> selectSysCurriculumListByStudent(SysStudent sysStudent) {
+    public List<SysCurriculum> selectSysCurriculumListByStudent(SysStudent sysStudent) {
         return sysCurriculumMapper.selectSysCurriculumListByStudent(sysStudent);
+    }
+
+    @Override
+    public List<SysCurriculum> selectSysCurriculumListByTeacher(SysTeacher sysTeacher) {
+        return sysCurriculumMapper.selectSysCurriculumListByTeacher(sysTeacher);
     }
 
     /**

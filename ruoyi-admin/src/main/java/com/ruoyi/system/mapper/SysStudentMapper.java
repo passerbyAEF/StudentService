@@ -2,6 +2,8 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.SysStudent;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 学生信息Mapper接口
@@ -58,4 +60,10 @@ public interface SysStudentMapper
      * @return 结果
      */
     public int deleteSysStudentByIds(String[] ids);
+
+    public int deleteStudentAndCurriculum(@Param("id") Integer id);
+
+    public int insertStudentAndCurriculum(@Param("id") Integer id, @Param("Cid")Integer Cid);
+
+    SysStudent selectStudentByUserId(@Param("id") Long id);
 }

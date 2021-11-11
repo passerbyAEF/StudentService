@@ -8,6 +8,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.web.domain.server.Sys;
 import com.ruoyi.system.domain.SysCurriculum;
 import com.ruoyi.system.domain.SysStudent;
 import com.ruoyi.system.service.ISysCurriculumService;
@@ -160,26 +161,24 @@ public class SysStudentController extends BaseController {
      * 课程List获取
      */
     @RequiresPermissions("system:student:curriculum")
-    @PostMapping("/edit/setCurriculum/list/{id}")
+    @PostMapping("/edit/setCurriculum/list/")
     @ResponseBody
-    public TableDataInfo getCurriculumListByStudent(@PathVariable("id") Long id) {
+    public TableDataInfo getCurriculumList() {
         startPage();
         List<SysCurriculum> list = sysCurriculumService.selectSysCurriculumList(new SysCurriculum());
-        SysStudent student = new SysStudent();
-        student.setId(id);
-        List<CurriculumListVo> sclist = sysCurriculumService.selectSysCurriculumListByStudent(student);
         return getDataTable(list);
     }
 
     /**
-     * 课程List获取
+     * 课程List修改
      */
     @RequiresPermissions("system:student:curriculum")
     @PostMapping("/edit/setCurriculum/edit")
     @ResponseBody
     public AjaxResult editCurriculum(@RequestParam("id") Integer id, @RequestParam("datalist") List<Integer> dataList) {
-//        startPage();
-//        List<SysCurriculum> list = sysCurriculumService.selectSysCurriculumList(new SysCurriculum());
+        int i=sysStudentService.updateStudentAndCurriculum(id,dataList);
+        if(i<dataList.size())
+            return AjaxResult.warn("数据修改失败");
         return success();
     }
 }
